@@ -22,6 +22,8 @@ class Carousel extends React.Component {
 
     isFavorite() {
         // GET from our backend whether this image is favorited
+        // input: image date (YYYY-MM-DD)
+        // output: image or null
         this.setState({ favoriteButton: "Favorite" })
     }
 
@@ -29,10 +31,14 @@ class Carousel extends React.Component {
         if (this.state.favoriteButton === "Favorite") {
             this.setState({ favoriteButton: "Unfavorite" })
             // POST to our backend to favorite this image
+            // input: image object
+            // output: 200 success
         }
         else {
             this.setState({ favoriteButton: "Favorite" })
             // POST to our backend to unfavorite this image
+            // input: image date (YYYY-MM-DD)
+            // output: 200 success
         }
     }
 

@@ -44,6 +44,9 @@ class MyTabs extends React.Component {
         //         console.log(data);
         // })
 
+        // input: None
+        // output: {response: [images]}
+
         // Sample response from API until we get the backend working
         this.setState({
             images: [
@@ -128,6 +131,9 @@ class MyTabs extends React.Component {
         //         this.setState({ images: data });
         //         console.log(data);
         // })
+
+        // input: nothing
+        // output: {response: [images]}
 
         // Sample response from our backend until we get the backend working
         this.setState({
