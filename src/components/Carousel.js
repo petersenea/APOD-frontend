@@ -78,10 +78,15 @@ class Carousel extends React.Component {
                             <img loading="eager" alt={this.props.images[this.state.currentIndex].date} src={this.props.images[this.state.currentIndex].url}></img>
                             <button onClick={this.goNext}>Next</button>
                         </div>
-                        <p>
-                            <b>Date: </b>{this.props.images[this.state.currentIndex].date}
-                        </p>
+                        
                         <button onClick={this.favorite}>{this.state.favoriteButton}</button>
+
+                        <div className="image-info">
+                            <p className="image-count">{this.state.currentIndex+1} / {this.props.images.length}</p>
+                            <p className="image-title">{this.props.images[this.state.currentIndex].title}</p>
+                            <p className="image-date">{this.props.images[this.state.currentIndex].date}</p>
+                            <p className="image-description">{this.props.images[this.state.currentIndex].explanation}</p>
+                        </div>
                     </div>
                 }
 
