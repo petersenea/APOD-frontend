@@ -112,7 +112,7 @@ class Carousel extends React.Component {
                     <div className="carousel-container">
 
                         <div className="carousel">
-                            <button onClick={this.goBack} className="fas fa-chevron-left"></button>
+                            <button onClick={this.goBack} className="fa fa-chevron-left"></button>
                             <figure>
                                 {this.props.images[this.state.currentIndex].media_type === "video" ?
                                     <iframe src={this.props.images[this.state.currentIndex].url} title={this.props.images[this.state.currentIndex].date}></iframe>
@@ -124,14 +124,14 @@ class Carousel extends React.Component {
                                         <p className="image-count">{this.state.currentIndex + 1} / {this.props.images.length}</p>
                                         <button onClick={this.favorite}>
                                             {this.state.favoriteButton === "Favorite" ?
-                                                <i className="far fa-star"></i>
+                                                <i className="fa far fa-star"></i>
                                                 :
-                                                <i className="fas fa-star"></i>}
+                                                <i className="fa fas fa-star"></i>}
                                         </button>
                                     </div>
                                 </figcaption>
                             </figure>
-                            <button onClick={this.goNext}><i className="fas fa-chevron-right"></i></button>
+                            <button onClick={this.goNext}><i className="fa fa-chevron-right"></i></button>
 
 
                         </div>
