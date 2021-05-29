@@ -124,9 +124,9 @@ class Carousel extends React.Component {
                                         <p className="image-count">{this.state.currentIndex + 1} / {this.props.images.length}</p>
                                         <button onClick={this.favorite}>
                                             {this.state.favoriteButton === "Favorite" ?
-                                                <i class="far fa-star"></i>
+                                                <i className="far fa-star"></i>
                                                 :
-                                                <i class="fas fa-star"></i>}
+                                                <i className="fas fa-star"></i>}
                                         </button>
                                     </div>
                                 </figcaption>
