@@ -16,7 +16,10 @@ class Carousel extends React.Component {
     }
 
     componentDidMount() {
+        // if (this.props.images.length !== 0) {
+        //     console.log("Component did mount", this.props.images)
         this.isFavorite()
+        // }
         // this.processImages()
     }
 
@@ -24,27 +27,33 @@ class Carousel extends React.Component {
         // GET from our backend whether this image is favorited
         // input: image date (YYYY-MM-DD)
         // output: image or null
-        fetch("https://apod-backend.herokuapp.com/images/favorited", {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            headers: {
-                'Content-Type': 'application/json',
-                'date': '2021-05-10'
-                // 'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            // body: JSON.stringify({date: "2021-05-10"}) // body data type must match "Content-Type" header
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data != null) {
-                    this.setState({ favoriteButton: "Favorite" })
+        if (this.props.images.length !== 0) {
+            console.log(this.props.images[this.state.currentIndex].date)
+            fetch("https://apod-backend.herokuapp.com/images/favorited", {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Custom-Header': this.props.images[this.state.currentIndex].date
                 }
-                console.log('isFavorite()', data);
-            });
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data)
+                    if (data !== null) {
+                        console.log("favorite")
+                        this.setState({favoriteButton: "Favorite"})
+                    }
+                    else {
+                        console.log("not favorite")
+                        this.setState({favoriteButton: "Unfavorite"})
+                    }
+                });
+        }
     }
 
     favorite() {
-        if (this.state.favoriteButton === "Favorite") {
-            this.setState({ favoriteButton: "Unfavorite" })
+        if (this.state.favoriteButton === "Unfavorite") {
+            
             // POST to our backend to favorite this image
             // input: image object
             // output: 200 success
@@ -52,16 +61,15 @@ class Carousel extends React.Component {
                 method: 'POST', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: JSON.stringify(this.props.images[this.state.currentIndex]) // body data type must match "Content-Type" header
             })
                 .then(response => {
                     console.log("Favoriting", this.props.images[this.state.currentIndex].date, "with status", response.status)
+                    this.setState({ favoriteButton: "Favorite" })
                 })
         }
         else {
-            this.setState({ favoriteButton: "Favorite" })
             // DELETE to our backend to unfavorite this image
             // input: image date (YYYY-MM-DD)
             // output: 200 success
@@ -69,36 +77,32 @@ class Carousel extends React.Component {
                 method: 'DELETE', // *GET, POST, PUT, DELETE, etc.
                 headers: {
                     'Content-Type': 'application/json'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: JSON.stringify({ date: this.props.images[this.state.currentIndex].date }) // body data type must match "Content-Type" header
             })
                 .then(response => {
                     console.log("Unfavoriting", this.props.images[this.state.currentIndex].date, "with status", response.status)
+                    this.setState({ favoriteButton: "Unfavorite", currentIndex: 0 }, this.props.getFavorites())
                 })
 
         }
     }
 
     goBack() {
-        this.isFavorite()
-
         let newIndex = this.state.currentIndex - 1;
         if (newIndex < 0) {
             newIndex = this.props.images.length - 1;
         }
-        this.setState({ currentIndex: newIndex });
+        this.setState({ currentIndex: newIndex }, () => this.isFavorite());
     }
 
     goNext() {
-        this.isFavorite()
-
         let newIndex = this.state.currentIndex + 1;
 
         if (newIndex > this.props.images.length - 1) {
             newIndex = 0
         }
-        this.setState({ currentIndex: newIndex });
+        this.setState({ currentIndex: newIndex }, () => this.isFavorite());
     }
 
 
@@ -124,9 +128,9 @@ class Carousel extends React.Component {
                                         <p className="image-count">{this.state.currentIndex + 1} / {this.props.images.length}</p>
                                         <button onClick={this.favorite}>
                                             {this.state.favoriteButton === "Favorite" ?
-                                                <i className="fa fa-star-o"></i>
+                                                <i className="fa fa-star"></i>
                                                 :
-                                                <i className="fa fa-star"></i>}
+                                                <i className="fa fa-star-o"></i>}
                                         </button>
                                     </div>
                                 </figcaption>
@@ -140,7 +144,7 @@ class Carousel extends React.Component {
 
                         <div className="image-info">
                             <p className="image-title">{this.props.images[this.state.currentIndex].title}</p>
-                            <p className="image-date">{this.props.images[this.state.currentIndex].date}</p>
+                            <p className="image-date">{this.props.images[this.state.currentIndex].date.slice(0,10)}</p>
                             <p className="image-description">{this.props.images[this.state.currentIndex].explanation}</p>
                         </div>
                     </div>

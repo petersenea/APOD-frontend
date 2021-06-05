@@ -39,6 +39,7 @@ class MyTabs extends React.Component {
     };
 
     componentDidMount() {
+        console.log("component did mount")
         this.getRecent();
     }
 
@@ -46,24 +47,21 @@ class MyTabs extends React.Component {
         fetch("https://apod-backend.herokuapp.com/images")
             .then(response => response.json())
             .then(data => {
-                this.setState({ images: data });
-                console.log(data);
+                this.carousel.current.setState({currentIndex: 0}, () => this.setState({ images: data }, () => this.carousel.current.isFavorite()));
+                // this.carousel.current.setState({currentIndex: 0});
+                // this.carousel.current.isFavorite();
         })
-
-        this.carousel.current.setState({currentIndex: 0});
-        this.carousel.current.isFavorite();
+        
     }
 
     getFavorites() {
         fetch("https://apod-backend.herokuapp.com/images/favorites")
             .then(response => response.json())
             .then(data => {
-                this.setState({ images: data });
-                console.log(data);
+                this.carousel.current.setState({currentIndex: 0}, () => this.setState({ images: data }, () => this.carousel.current.isFavorite()));
+                // this.carousel.current.setState({currentIndex: 0});
+                // this.carousel.current.isFavorite();
         })
-
-        this.carousel.current.setState({currentIndex: 0});
-        this.carousel.current.isFavorite();
 
     }
 
@@ -84,7 +82,7 @@ class MyTabs extends React.Component {
                         <Tab label="Favorite Images" />
                     </Tabs>
                 </Paper>
-                <Carousel images={this.state.images} ref={this.carousel}/>
+                <Carousel images={this.state.images} ref={this.carousel} getFavorites={this.getFavorites}/>
             </div>
         );
     }
